@@ -174,7 +174,7 @@ end
 
 function M:Update_ZoneText()
 	if E.db.general.minimap.locationText == 'HIDE' or not E.private.general.minimap.enable then return; end
-	Minimap.location:SetText(strsub(GetMinimapZoneText(),1,46))
+	Minimap.location:SetText(strsub(GetMinimapZoneText(),1,33)) --schism
 	Minimap.location:SetTextColor(M:GetLocTextColor())
 	Minimap.location:FontTemplate(E.LSM:Fetch("font", E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline)
 end
@@ -223,6 +223,8 @@ function M:UpdateSettings()
 		if E.db.datatexts.minimapPanels and E.private.general.minimap.enable then
 			LeftMiniPanel:Show()
 			RightMiniPanel:Show()
+			suiCreateShadow(LeftMiniPanel,0,0,0,.4,3,3,3) -- schism shadow
+			suiCreateShadow(RightMiniPanel,0,0,0,.4,3,3,3) -- schism shadow
 		else
 			LeftMiniPanel:Hide()
 			RightMiniPanel:Hide()
@@ -281,7 +283,8 @@ function M:UpdateSettings()
 		MMHolder:Width((Minimap:GetWidth() + E.Border + E.Spacing*3))
 
 		if E.db.datatexts.minimapPanels then
-			MMHolder:Height(Minimap:GetHeight() + (LeftMiniPanel and (LeftMiniPanel:GetHeight() + E.Border) or 24) + E.Spacing*3)
+			MMHolder:Height(Minimap:GetHeight() + E.Border + E.Spacing*3) --schism
+			--MMHolder:Height(Minimap:GetHeight() + (LeftMiniPanel and (LeftMiniPanel:GetHeight() + E.Border) or 24) + E.Spacing*3)
 		else
 			MMHolder:Height(Minimap:GetHeight() + E.Border + E.Spacing*3)
 		end
@@ -408,6 +411,14 @@ function M:Initialize()
 	Minimap:SetArchBlobRingAlpha(0)
 	Minimap:CreateBackdrop('Default')
 	Minimap:SetFrameLevel(Minimap:GetFrameLevel() + 2)
+
+	suiCreateShadow(Minimap.backdrop,0,0,0,.4,3,3,3) -- schism shadow
+	Minimap.backdrop:SetPoint("TOPLEFT", mmholder, "TOPLEFT", 0, 18) --schism: useful bar backdrop boarder points. Doesnt alter bar1?
+	Minimap.backdrop:SetPoint("BOTTOMRIGHT", mmholder, "BOTTOMRIGHT", 0, 0) -- schism
+	Minimap.backdrop:SetBackdropColor(0, 0, 0, 1) -- schism
+	Minimap.backdrop:SetBackdropBorderColor(0, 0, 0, 1) -- schism
+
+
 	Minimap:HookScript('OnEnter', function(self)
 		if E.db.general.minimap.locationText ~= 'MOUSEOVER' or not E.private.general.minimap.enable then return; end
 		self.location:Show()
@@ -424,9 +435,56 @@ function M:Initialize()
 
 	Minimap.location = Minimap:CreateFontString(nil, 'OVERLAY')
 	Minimap.location:FontTemplate(nil, nil, 'OUTLINE')
-	Minimap.location:Point('TOP', Minimap, 'TOP', 0, -2)
+	Minimap.location:Point('TOP', Minimap, 'TOP', 0, 14)
 	Minimap.location:SetJustifyH("CENTER")
 	Minimap.location:SetJustifyV("MIDDLE")
+	--Minimap.location:SetFrameLevel(Minimap:GetFrameLevel()+4)
+
+
+	-- schism
+	local locFrame = CreateFrame('Frame', 'locFrame', Minimap)
+	locFrame:Point('TOP', Minimap, 'TOP', 0, 18)
+	locFrame:Width(Minimap:GetWidth())
+	locFrame:Height(18)
+	--locFrame:CreateBackdrop("Transparent")
+	locFrame:SetBackdrop( { 
+		bgFile = E["media"].blankTex, 
+	  	edgeFile = nil, tile = false, tileSize = 0, edgeSize = 0, 
+	  	insets = { left = -1, right = 0, top = 0, bottom = 0 }
+	} );
+	locFrame:SetBackdropColor(0, 0, 0, .6)
+	locFrame:SetFrameLevel(Minimap:GetFrameLevel())
+
+	--[[local locFrame2 = CreateFrame('Frame', 'locFrame', Minimap)
+	locFrame2:Point('BOTTOM', Minimap, 'BOTTOM', 0, -18)
+	locFrame2:Width(Minimap:GetWidth())
+	locFrame2:Height(18)
+	--locFrame:CreateBackdrop("Transparent")
+	locFrame2:SetBackdrop( { 
+		bgFile = E["media"].blankTex, 
+	  	edgeFile = nil, tile = false, tileSize = 0, edgeSize = 0, 
+	  	insets = { left = -1, right = 0, top = 0, bottom = 0 }
+	} );
+	locFrame2:SetBackdropColor(0, 0, 0, .6)
+	locFrame2:SetFrameLevel(Minimap:GetFrameLevel())--]]
+
+	--[[local f = CreateFrame("Frame", nil, Minimap.location)
+	f:SetWidth(666)
+	f:SetHeight(666)
+	f:SetFrameStrata("HIGH")
+CreateFrame("frameType", ["name"], [parent], ["template"])
+	f:SetBackdrop( { 
+	  bgFile = bg, 
+	  edgeFile = edge, tile = false, tileSize = 0, edgeSize = 32, 
+	  insets = { left = 0, right = 0, top = 0, bottom = 0 }
+	} );
+	f:SetBackdropColor(0.1, 0.9, 0.3, 0.8)
+	f:SetBackdropBorderColor(0.2, 0.2, 0.2, 0.9)
+	--]]
+
+
+
+
 	if E.db.general.minimap.locationText ~= 'SHOW' or not E.private.general.minimap.enable then
 		Minimap.location:Hide()
 	end

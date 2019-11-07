@@ -744,7 +744,7 @@ function mod:NAME_PLATE_CREATED(_, frame)
 	frame.unitFrame = CreateFrame("BUTTON", format("ElvUI_NamePlate%d", plateID), UIParent);
 	frame.unitFrame:EnableMouse(false);
 	frame.unitFrame:SetAllPoints(frame)
-	frame.unitFrame:SetFrameStrata("BACKGROUND")
+	frame.unitFrame:SetFrameStrata("LOW")
 	frame.unitFrame:SetScript("OnEvent", mod.OnEvent)
 	frame.unitFrame.plateID = plateID
 
@@ -763,6 +763,13 @@ function mod:NAME_PLATE_CREATED(_, frame)
 	frame.unitFrame.Elite = self:ConstructElement_Elite(frame.unitFrame)
 	frame.unitFrame.DetectionModel = self:ConstructElement_Detection(frame.unitFrame)
 	frame.unitFrame.Highlight = self:ConstructElement_Highlight(frame.unitFrame)
+
+	--frame.unitFrame.Elite:SetFrameLevel(0)
+	--frame.unitFrame.Elite:SetFrameStrata("BACKGROUND")  --schism
+
+	--frame.unitFrame.HealthBar:SetFrameLevel(20)
+	--frame.unitFrame.HealthBar:SetFrameStrata("LOW")
+
 
 	if frame.UnitFrame and not frame.unitFrame.onShowHooked then
 		self:SecureHookScript(frame.UnitFrame, "OnShow", function(blizzPlate)

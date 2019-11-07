@@ -61,7 +61,7 @@ local function CreateStyleShadow(f)
 	f.styleShadow = styleShadow
 end
 
-local function CreateSoftGlow(f)
+function CreateSoftGlow(f)
 	if f.sglow then return end
 
 	local r, g, b = BUI:unpackColor(E.db.general.valuecolor)
@@ -74,8 +74,8 @@ local function CreateSoftGlow(f)
 		edgeFile = LSM:Fetch('border', 'ElvUI GlowBorder'), edgeSize = E:Scale(3),
 		insets = {left = E:Scale(5), right = E:Scale(5), top = E:Scale(5), bottom = E:Scale(5)},
 	})
-
-	sglow:SetBackdropBorderColor(r, g, b, 0.6)
+	sglow:SetBackdropColor(1, 0, 0, 0.6)
+	sglow:SetBackdropBorderColor(0, 1, 0, 0.6)
 
 	f.sglow = sglow
 	BUI["softGlow"][sglow] = true

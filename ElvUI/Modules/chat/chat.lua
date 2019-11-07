@@ -674,7 +674,7 @@ end
 function CH:CopyChat(frame)
 	if not CopyChatFrame:IsShown() then
 		local _, fontSize = FCF_GetChatWindowInfo(frame:GetID());
-		if fontSize < 10 then fontSize = 12 end
+		if fontSize < 10 then fontSize = 10 end
 		FCF_SetChatWindowFontSize(frame, frame, 0.01)
 		CopyChatFrame:Show()
 		local lineCt = self:GetLines(frame)
@@ -1709,7 +1709,7 @@ function CH:SetupChat()
 		local _, fontSize = FCF_GetChatWindowInfo(id);
 		self:StyleChat(frame)
 		FCFTab_UpdateAlpha(frame)
-		frame:SetFont(LSM:Fetch("font", self.db.font), fontSize, self.db.fontOutline)
+		frame:SetFont(LSM:Fetch("font", self.db.font), fontSize-1, self.db.fontOutline)
 		if self.db.fontOutline ~= 'NONE' then
 			frame:SetShadowColor(0, 0, 0, 0.2)
 		else

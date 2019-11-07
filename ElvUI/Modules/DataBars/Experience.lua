@@ -103,7 +103,7 @@ function mod:ExperienceBar_OnEnter()
 		E:UIFrameFadeIn(self, 0.4, self:GetAlpha(), 1)
 	end
 	GameTooltip:ClearLines()
-	GameTooltip:SetOwner(self, 'ANCHOR_CURSOR', 0, -4)
+	GameTooltip:SetOwner(self, 'ANCHOR_CURSOR_RIGHT', 0,50)
 
 	local cur, max = mod:GetXP('player')
 	local rested = GetXPExhaustion()
@@ -128,12 +128,21 @@ function mod:UpdateExperienceDimensions()
 	self.expBar:Width(self.db.experience.width)
 	self.expBar:Height(self.db.experience.height)
 
-	self.expBar.text:FontTemplate(LSM:Fetch("font", self.db.experience.font), self.db.experience.textSize, self.db.experience.fontOutline)
+	self.expBar.text:FontTemplate(LSM:Fetch("font", self.db.experience.font), self.db.experience.textSize-3, self.db.experience.fontOutline) --schism -3
+	self.expBar.text:SetPoint("LEFT", self.expBar, "LEFT", 11, 0) --schism
 	self.expBar.rested:SetOrientation(self.db.experience.orientation)
 	self.expBar.statusBar:SetReverseFill(self.db.experience.reverseFill)
 
+
+	self.expBar.statusBar:SetAlpha(.6) --schism
+	self.expBar.rested:SetAlpha(.6) --schism
+	self.expBar.text:SetAlpha(1)
+
+
 	self.expBar.statusBar:SetOrientation(self.db.experience.orientation)
 	self.expBar.rested:SetReverseFill(self.db.experience.reverseFill)
+
+	self.expBar.statusBar:SetPoint("RIGHT", self.expBar, "RIGHT", 11, 11) --sch
 
 	if self.db.experience.orientation == "HORIZONTAL" then
 		self.expBar.rested:SetRotatesTexture(false)
@@ -172,13 +181,20 @@ function mod:EnableDisable_ExperienceBar()
 end
 
 function mod:LoadExperienceBar()
-	self.expBar = self:CreateBar('ElvUI_ExperienceBar', self.ExperienceBar_OnEnter, self.ExperienceBar_OnClick, 'LEFT', LeftChatPanel, 'RIGHT', -E.Border + E.Spacing*3, 0)
+	self.expBar = self:CreateBar('ElvUI_ExperienceBar', self.ExperienceBar_OnEnter, self.ExperienceBar_OnClick, 'LEFT', LeftChatPanel, 'RIGHT', -E.Border + E.Spacing*13, 10)
+	self.expBar:SetFrameStrata('LOW')
+
+	self.expBar:SetFrameLevel(2)	--schism
+	suiCreateShadow(self.expBar,0,0,0,1,2,2,2) -- schismsuiCreateShadow(frame.Health,0,0,0,1,3,3,3)
+	--self.expBar:SetStatusBarTexture(E.media.BuiOnePixel)--schism
+
 	self.expBar.statusBar:SetStatusBarColor(0, 0.4, 1, .8)
+	self.expBar.statusBar:SetPoint("RIGHT", self.expBar, "RIGHT", 11, 11)
 	self.expBar.rested = CreateFrame('StatusBar', nil, self.expBar)
 	self.expBar.rested:SetInside()
-	self.expBar.rested:SetStatusBarTexture(E.media.normTex)
+	--self.expBar.rested:SetStatusBarTexture(E.media.normTex)
 	E:RegisterStatusBar(self.expBar.rested)
-	self.expBar.rested:SetStatusBarColor(1, 0, 1, 0.2)
+	self.expBar.rested:SetStatusBarColor(1, 0, 1, 1)
 
 	self.expBar.eventFrame = CreateFrame("Frame")
 	self.expBar.eventFrame:Hide()

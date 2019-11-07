@@ -45,6 +45,9 @@ function UF:Construct_PartyFrames()
 		self.Power = UF:Construct_PowerBar(self, true, true, 'LEFT')
 		self.Power.frequentUpdates = false;
 
+		suiCreateShadow(self.Health,0,0,0,1,3,3,3) --schism
+		suiCreateShadow(self.Power,0,0,0,1,3,3,3)	--Schism
+
 		self.Portrait3D = UF:Construct_Portrait(self, 'model')
 		self.Portrait2D = UF:Construct_Portrait(self, 'texture')
 		self.InfoPanel = UF:Construct_InfoPanel(self)

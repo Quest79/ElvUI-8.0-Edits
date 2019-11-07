@@ -10,7 +10,7 @@ local ToggleFrame = ToggleFrame
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: WorldMapFrame
 
-local displayString = ""
+local displayString = "%.1f"
 local inRestrictedArea = false
 
 local function Update(self, elapsed)
@@ -41,7 +41,7 @@ local function Click()
 end
 
 local function ValueColorUpdate(hex)
-	displayString = join("", hex, "%.2f|r", " , ", hex, "%.2f|r")
+	displayString = join("", hex, "%.1f|r", " , ", hex, "%.1f|r") -- schism "%.2f" to "%.1f"
 end
 E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 

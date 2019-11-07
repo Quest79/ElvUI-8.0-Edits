@@ -32,7 +32,7 @@ function E:UpdateBlizzardFonts()
 	local COMBAT     = LSM:Fetch('font', self.private.general.dmgfont)
 	local NUMBER     = self["media"].normFont
 	local MONOCHROME = ''
-	local SHADOWCOLOR = 0, 0, 0, .4 	-- add alpha for shadows
+	local SHADOWCOLOR = 1, 0, 0, 1 	-- add alpha for shadows
 	local NO_OFFSET = 0, 0
 	local NORMALOFFSET = 1.25, -1.25 	-- shadow offset for small fonts
 	local BIGOFFSET = 2, -2 			-- shadow offset for large fonts

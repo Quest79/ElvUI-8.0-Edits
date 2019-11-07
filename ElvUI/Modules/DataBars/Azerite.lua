@@ -78,7 +78,7 @@ function mod:AzeriteBar_OnEnter()
 		E:UIFrameFadeIn(self, 0.4, self:GetAlpha(), 1)
 	end
 	GameTooltip:ClearLines()
-	GameTooltip:SetOwner(self, 'ANCHOR_CURSOR', 0, -4)
+	GameTooltip:SetOwner(self, 'ANCHOR_CURSOR_RIGHT', 0, 50) --schism
 
 	local azeriteItemLocation = C_AzeriteItem_FindActiveAzeriteItem();
 	local azeriteItem = Item:CreateFromItemLocation(azeriteItemLocation);
@@ -142,10 +142,17 @@ function mod:EnableDisable_AzeriteBar()
 end
 
 function mod:LoadAzeriteBar()
-	self.azeriteBar = self:CreateBar('ElvUI_AzeriteBar', self.AzeriteBar_OnEnter, nil, 'RIGHT', self.honorBar, 'LEFT', E.Border - E.Spacing*3, 0)
+	self.azeriteBar = self:CreateBar('ElvUI_AzeriteBar', self.AzeriteBar_OnEnter, nil, 'RIGHT', self.honorBar, 'LEFT', E.Border - E.Spacing*13, 0)
 	self.azeriteBar.statusBar:SetStatusBarColor(.901, .8, .601)
 	self.azeriteBar.statusBar:SetMinMaxValues(0, 325)
-	self.azeriteBar.statusBar:SetFrameLevel(self.azeriteBar:GetFrameLevel() + 2)
+	self.azeriteBar.statusBar:SetFrameLevel(self.azeriteBar:GetFrameLevel() + 1)
+
+	self.azeriteBar:SetFrameLevel(0)
+	self.azeriteBar:SetFrameStrata("BACKGROUND")
+	self.azeriteBar.statusBar:SetFrameStrata("BACKGROUND")
+	--self.azeriteBar.iborder:Hide()
+	--self.azeriteBar.oborder:Hide()
+	--self.azeriteBar.statusBar:Hide() --  shism hides colored bar
 
 	self.azeriteBar.eventFrame = CreateFrame("Frame")
 	self.azeriteBar.eventFrame:Hide()

@@ -63,8 +63,8 @@ function E:Grid_Hide()
 end
 
 function E:ToggleConfigMode(override, configType)
-	if InCombatLockdown() then return; end
-	if override ~= nil and override ~= '' then E.ConfigurationMode = override end
+	--if InCombatLockdown() then return; end
+	--if override ~= nil and override ~= '' then E.ConfigurationMode = override end
 
 	if E.ConfigurationMode ~= true then
 		if not grid then

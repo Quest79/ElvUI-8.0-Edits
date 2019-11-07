@@ -65,6 +65,8 @@ local SPELL_POWER_SOUL_SHARDS = Enum.PowerType.SoulShards
 local UNITNAME_SUMMON_TITLE17 = UNITNAME_SUMMON_TITLE17
 local UNKNOWN = UNKNOWN
 
+--local inCombat = UnitAffectingCombat("player") -- schism
+
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: Hex, PowerBarColor, _TAGS
 
@@ -596,8 +598,59 @@ end
 ElvUF.Tags.Events['name:long'] = 'UNIT_NAME_UPDATE'
 ElvUF.Tags.Methods['name:long'] = function(unit)
 	local name = UnitName(unit)
-	return name ~= nil and E:ShortenString(name, 20) or nil
+	return name ~= nil and E:ShortenString(name, 30) or nil
 end
+
+
+
+--schism
+ElvUF.Tags.Events['name:long:combat'] = 'UNIT_NAME_UPDATE UNIT_COMBAT UNIT_HEALTH_FREQUENT'
+ElvUF.Tags.Methods['name:long:combat'] = function(unit)
+	local inCombat = UnitAffectingCombat("player")
+	local name = UnitName(unit)
+	if inCombat then
+		name = E:ShortenString("", 1) -- test to visualize this is changing
+	else
+		name = E:ShortenString(name, 30)
+	end
+	return name
+end
+
+ElvUF.Tags.Events['level:combat'] = 'UNIT_NAME_UPDATE UNIT_COMBAT UNIT_HEALTH_FREQUENT'
+ElvUF.Tags.Methods['level:combat'] = function(unit)
+	local inCombat = UnitAffectingCombat("player")
+	local level = UnitLevel('player')
+	if inCombat then
+		return nil
+	else
+		return level
+	end
+end
+
+ElvUF.Tags.Events['race:combat'] = 'UNIT_NAME_UPDATE UNIT_COMBAT UNIT_HEALTH_FREQUENT'
+ElvUF.Tags.Methods['race:combat'] = function(unit)
+	local inCombat = UnitAffectingCombat("player")
+	local rrace = UnitRace("player")
+	if inCombat then
+		return nil
+	else
+		return rrace
+	end
+end
+
+ElvUF.Tags.Events['class:combat'] = 'UNIT_NAME_UPDATE UNIT_COMBAT UNIT_HEALTH_FREQUENT'
+ElvUF.Tags.Methods['class:combat'] = function(unit)
+	local inCombat = UnitAffectingCombat("player")
+	local sclass = select(1,UnitClass("player"))
+	if inCombat then
+		return nil
+	else
+		return sclass
+	end
+end
+--schism
+
+
 
 ElvUF.Tags.Events['name:veryshort:status'] = 'UNIT_NAME_UPDATE UNIT_CONNECTION PLAYER_FLAGS_CHANGED UNIT_HEALTH'
 ElvUF.Tags.Methods['name:veryshort:status'] = function(unit)

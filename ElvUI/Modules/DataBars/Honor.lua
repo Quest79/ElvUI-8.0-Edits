@@ -80,7 +80,7 @@ function mod:HonorBar_OnEnter()
 		E:UIFrameFadeIn(self, 0.4, self:GetAlpha(), 1)
 	end
 	GameTooltip:ClearLines()
-	GameTooltip:SetOwner(self, 'ANCHOR_CURSOR', 0, -4)
+	GameTooltip:SetOwner(self, 'ANCHOR_CURSOR_RIGHT', 0, 50)
 
 	local current = UnitHonor("player");
 	local max = UnitHonorMax("player");

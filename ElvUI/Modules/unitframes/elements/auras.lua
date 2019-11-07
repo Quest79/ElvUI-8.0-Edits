@@ -26,7 +26,7 @@ local UnitIsUnit = UnitIsUnit
 
 function UF:Construct_Buffs(frame)
 	local buffs = CreateFrame('Frame', frame:GetName().."Buffs", frame)
-	buffs.spacing = E.Spacing
+	buffs.spacing = E.Spacing+1 --schism
 	buffs.PreSetPosition = (not frame:GetScript("OnUpdate")) and self.SortAuras or nil
 	buffs.PostCreateIcon = self.Construct_AuraIcon
 	buffs.PostUpdateIcon = self.PostUpdateAura
@@ -41,7 +41,7 @@ end
 
 function UF:Construct_Debuffs(frame)
 	local debuffs = CreateFrame('Frame', frame:GetName().."Debuffs", frame)
-	debuffs.spacing = E.Spacing
+	debuffs.spacing = E.Spacing+1 --schism
 	debuffs.PreSetPosition = (not frame:GetScript("OnUpdate")) and self.SortAuras or nil
 	debuffs.PostCreateIcon = self.Construct_AuraIcon
 	debuffs.PostUpdateIcon = self.PostUpdateAura

@@ -197,7 +197,7 @@ function lib:CreateButton(id, name, header, config)
 	WrapOnClick(button)
 
 	-- adjust hotkey style for better readability
-	button.HotKey:SetFont(button.HotKey:GetFont(), 13, "OUTLINE")
+	button.HotKey:SetFont(button.HotKey:GetFont(), 13, "OUTLINE") 
 	button.HotKey:SetVertexColor(0.75, 0.75, 0.75)
 
 	-- adjust count/stack size

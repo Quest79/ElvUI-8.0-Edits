@@ -9,6 +9,9 @@ local UnitClassification = UnitClassification
 function mod:UpdateElement_Elite(frame)
 	if not self.db.units[frame.UnitType].eliteIcon then return; end
 
+	frame:SetFrameStrata("BACKGROUND")
+	frame:SetFrameLevel(0)
+
 	local icon = frame.Elite
 	if self.db.units[frame.UnitType].eliteIcon.enable then
 		local c = UnitClassification(frame.unit)

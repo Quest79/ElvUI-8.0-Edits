@@ -76,6 +76,28 @@ function UF:Construct_PlayerFrame(frame)
 	E:CreateMover(frame, frame:GetName()..'Mover', L["Player Frame"], nil, nil, nil, 'ALL,SOLO')
 
 	frame.unitframeType = "player"
+	suiCreateShadow(frame.Health,0,0,0,1,3,3,3) --schism shadow
+	suiCreateShadow(frame.Power,0,0,0,1,3,3,3) --schism shadow
+
+	local inCombat = UnitAffectingCombat('player')
+	--frame:RegisterEvent('UNIT_HEALTH_FREQUENT')
+	--frame:SetScript('OnEvent', print)
+
+--[[	if 'OnEvent' then
+		print('combat')
+	end--]]
+
+--[[	if UNIT_HEALTH_FREQUENT then
+		suiCreateShadow(frame.Health,1,0,0,1,3,3,1) --schism combat glow
+		suiCreateShadow(frame.Power,1,0,0,1,3,3,1) --schism combat glow
+		suiCreateShadow(frame.Health,1,0,0,.7,5,5,5) --schism combat glow
+		suiCreateShadow(frame.Power,1,0,0,.7,5,5,5) --schism combat glow
+	else
+		suiCreateShadow(frame.Health,1,0,0,0,3,3,1) --schism combat glow
+		suiCreateShadow(frame.Power,1,0,0,0,3,3,1) --schism combat glow
+	end--]]
+
+
 end
 
 function UF:Update_PlayerFrame(frame, db)
@@ -191,7 +213,15 @@ function UF:Update_PlayerFrame(frame, db)
 	UF:Configure_PVPIcon(frame)
 
 	--CustomTexts
+	--if not UnitAffectingCombat("player") then --schism test
 	UF:Configure_CustomTexts(frame)
+	--end
+
+	local nameTag = frame.customTexts and frame.customTexts['name:long'] --schism
+	if nameTag and nameTag:IsVisible() then
+	    nameTag:UpdateTag()
+	end
+
 
 	E:SetMoverSnapOffset(frame:GetName()..'Mover', -(12 + db.castbar.height))
 	frame:UpdateAllElements("ElvUI_UpdateAllElements")
@@ -208,6 +238,15 @@ local function UpdateClassBar()
 		UF.ToggleResourceBar(frame[frame.ClassBar])
 	end
 end
+
+--[[local nameLong = frame.customTexts and frame.customTexts['name:long']
+if nameLong and nameLong:IsVisible() then
+	if UnitAffectingCombat("player") then
+		nameLong:Hide()
+		nameLong:UpdateTag()
+	end
+end--]]
+
 
 local f = CreateFrame("Frame")
 f:RegisterEvent("PLAYER_ENTERING_WORLD")

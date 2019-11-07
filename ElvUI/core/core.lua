@@ -241,7 +241,9 @@ function E:UpdateMedia()
 	--Textures
 	self["media"].blankTex = LSM:Fetch("background", "ElvUI Blank")
 	self["media"].normTex = LSM:Fetch("statusbar", self.private['general'].normTex)
+	self["media"].BuiOnePixel = LSM:Fetch("statusbar", self.private['general'].BuiOnePixel)  --schism
 	self["media"].glossTex = LSM:Fetch("statusbar", self.private['general'].glossTex)
+	self["media"].MelliDark = LSM:Fetch("statusbar", self.private['general'].MelliDark) --schism
 
 	--Border Color
 	local border = E.db['general'].bordercolor
@@ -711,6 +713,26 @@ function E:RemoveTableDuplicates(cleanTable, checkTable)
 
 	return cleaned
 end
+
+
+--schism
+function suiCreateShadow(f, r, g, b, a, s1, s2, edge)
+
+	local sh = CreateFrame('Frame', nil, f)
+
+	sh:SetFrameLevel(1)
+	sh:SetFrameStrata(f:GetFrameStrata())
+	sh:SetOutside(f, s1, s2)
+	sh:SetBackdrop( {
+		edgeFile = LSM:Fetch('border', 'ElvUI GlowBorder'), edgeSize = E:Scale(edge),
+		insets = {left = E:Scale(5), right = E:Scale(5), top = E:Scale(5), bottom = E:Scale(5)},
+	})
+	--sh:SetBackdropColor(1, 0, 0, 0.6)
+	sh:SetBackdropBorderColor(r, g, b, a)
+
+	f.sh = sh
+end
+
 
 --The code in this function is from WeakAuras, credit goes to Mirrored and the WeakAuras Team
 function E:TableToLuaString(inTable)

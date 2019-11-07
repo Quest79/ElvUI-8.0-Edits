@@ -43,6 +43,10 @@ function UF:Construct_TargetFrame(frame)
 	frame:Point('BOTTOMRIGHT', E.UIParent, 'BOTTOM', 413, 68)
 	E:CreateMover(frame, frame:GetName()..'Mover', L["Target Frame"], nil, nil, nil, 'ALL,SOLO')
 
+	frame.unitframeType = "player"--schism shadow
+	suiCreateShadow(frame.Health,0,0,0,1,3,3,3) --schism shadow
+	suiCreateShadow(frame.Power,0,0,0,1,3,3,3) --schism shadow
+
 	frame.unitframeType = "target"
 end
 

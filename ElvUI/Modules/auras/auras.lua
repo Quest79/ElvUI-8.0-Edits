@@ -139,6 +139,8 @@ function A:CreateIcon(button)
 	button.highlight:SetColorTexture(1, 1, 1, 0.45)
 	button.highlight:SetInside()
 
+	suiCreateShadow(button,0,0,0,.7,3,3,3) -- schism
+
 	E:SetUpAnimGroup(button)
 
 	-- fetch cooldown settings
@@ -214,8 +216,10 @@ function A:UpdateAura(button, index)
 			if not button.timeLeft then
 				button.timeLeft = timeLeft
 				button:SetScript("OnUpdate", A.UpdateTime)
+				button.time:FontTemplate(font, 10, self.db.fontOutline) --schism
 			else
 				button.timeLeft = timeLeft
+				button.time:FontTemplate(font, 10, self.db.fontOutline) --schism
 			end
 
 			button.nextUpdate = -1

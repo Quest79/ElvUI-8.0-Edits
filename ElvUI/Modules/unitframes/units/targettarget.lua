@@ -14,6 +14,9 @@ function UF:Construct_TargetTargetFrame(frame)
 
 	frame.Power = self:Construct_PowerBar(frame, true, true, 'LEFT')
 
+	suiCreateShadow(frame.Health,0,0,0,1,3,3,3) --schism
+	suiCreateShadow(frame.Power,0,0,0,1,3,3,3) --schism
+
 	frame.Name = self:Construct_NameText(frame)
 
 	frame.Portrait3D = self:Construct_Portrait(frame, 'model')

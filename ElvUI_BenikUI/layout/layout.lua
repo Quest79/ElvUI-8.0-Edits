@@ -201,6 +201,24 @@ local function updateButtonFont()
 	end
 end
 
+--schism
+function sui2CreateShadow(f, r, g, b, a, s1, s2, edge)
+
+	local sh = CreateFrame('Frame', nil, f)
+
+	sh:SetFrameLevel(1)
+	sh:SetFrameStrata(f:GetFrameStrata())
+	sh:SetOutside(f, s1, s2)
+	sh:SetBackdrop( {
+		edgeFile = LSM:Fetch('border', 'ElvUI GlowBorder'), edgeSize = E:Scale(edge),
+		insets = {left = E:Scale(5), right = E:Scale(5), top = E:Scale(5), bottom = E:Scale(5)},
+	})
+	--sh:SetBackdropColor(1, 0, 0, 0.6)
+	sh:SetBackdropBorderColor(r, g, b, a)
+
+	f.sh = sh
+end
+
 local function Panel_OnShow(self)
 	self:SetFrameLevel(0)
 end
@@ -210,17 +228,22 @@ function BUIL:ChangeLayout()
 	LeftMiniPanel:Height(PANEL_HEIGHT)
 	RightMiniPanel:Height(PANEL_HEIGHT)
 
+	-- Schism modification for spacing. I wanted all these to look anchored to the bottom of the screen.
+	schisMod = 2
+
 	-- Left dt panel
 	Bui_ldtp:SetFrameStrata('BACKGROUND')
-	Bui_ldtp:Point('TOPLEFT', LeftChatPanel, 'BOTTOMLEFT', (SPACING +PANEL_HEIGHT), -SPACING)
-	Bui_ldtp:Point('BOTTOMRIGHT', LeftChatPanel, 'BOTTOMRIGHT', -(SPACING +PANEL_HEIGHT), -PANEL_HEIGHT -SPACING)
+	Bui_ldtp:Point('TOPLEFT', LeftChatPanel, 'BOTTOMLEFT', (SPACING +PANEL_HEIGHT + schisMod) - (schisMod*3), -SPACING - schisMod)
+	Bui_ldtp:Point('BOTTOMRIGHT', LeftChatPanel, 'BOTTOMRIGHT', -(SPACING +PANEL_HEIGHT) + (schisMod*3), -PANEL_HEIGHT -SPACING - schisMod)
 	Bui_ldtp:Style('Outside', nil, false, true)
+	sui2CreateShadow(Bui_ldtp,0,0,0,.4,3,3,3) --schism
 
 	-- Right dt panel
 	Bui_rdtp:SetFrameStrata('BACKGROUND')
-	Bui_rdtp:Point('TOPLEFT', RightChatPanel, 'BOTTOMLEFT', (SPACING +PANEL_HEIGHT), -SPACING)
-	Bui_rdtp:Point('BOTTOMRIGHT', RightChatPanel, 'BOTTOMRIGHT', -(SPACING +PANEL_HEIGHT), -PANEL_HEIGHT -SPACING)
+	Bui_rdtp:Point('TOPLEFT', RightChatPanel, 'BOTTOMLEFT', (SPACING +PANEL_HEIGHT) - (schisMod), -SPACING - schisMod)
+	Bui_rdtp:Point('BOTTOMRIGHT', RightChatPanel, 'BOTTOMRIGHT', -(SPACING +PANEL_HEIGHT) + (schisMod), -PANEL_HEIGHT -SPACING - schisMod)
 	Bui_rdtp:Style('Outside', nil, false, true)
+	sui2CreateShadow(Bui_rdtp,0,0,0,.4,3,3,3) --schism
 
 	-- Middle dt panel
 	Bui_mdtp:SetFrameStrata('BACKGROUND')
@@ -233,13 +256,13 @@ function BUIL:ChangeLayout()
 
 	-- dummy frame for chat/threat (left)
 	Bui_dchat:SetFrameStrata('LOW')
-	Bui_dchat:Point('TOPLEFT', LeftChatPanel, 'BOTTOMLEFT', 0, -SPACING)
-	Bui_dchat:Point('BOTTOMRIGHT', LeftChatPanel, 'BOTTOMRIGHT', 0, -PANEL_HEIGHT -SPACING)
+	Bui_dchat:Point('TOPLEFT', LeftChatPanel, 'BOTTOMLEFT', 0, -SPACING - schisMod)
+	Bui_dchat:Point('BOTTOMRIGHT', LeftChatPanel, 'BOTTOMRIGHT', 0, -PANEL_HEIGHT -SPACING - schisMod)
 
 	-- dummy frame for threat (right)
 	Bui_dthreat:SetFrameStrata('LOW')
-	Bui_dthreat:Point('TOPLEFT', RightChatPanel, 'BOTTOMLEFT', 0, -SPACING)
-	Bui_dthreat:Point('BOTTOMRIGHT', RightChatPanel, 'BOTTOMRIGHT', 0, -PANEL_HEIGHT -SPACING)
+	Bui_dthreat:Point('TOPLEFT', RightChatPanel, 'BOTTOMLEFT', 0, -SPACING - schisMod)
+	Bui_dthreat:Point('BOTTOMRIGHT', RightChatPanel, 'BOTTOMRIGHT', 0, -PANEL_HEIGHT -SPACING - schisMod)
 
 	-- Buttons
 	for i = 1, BUTTON_NUM do
@@ -254,11 +277,12 @@ function BUIL:ChangeLayout()
 		bbuttons[i].text:SetPoint('CENTER', 1, 0)
 		bbuttons[i].text:SetJustifyH('CENTER')
 		bbuttons[i].text:SetTextColor(BUI:unpackColor(E.db.general.valuecolor))
+		sui2CreateShadow(bbuttons[i],0,0,0,.4,3,3,3)--schism. needs moar shadow
 
 		-- ElvUI Config
 		if i == 1 then
-			bbuttons[i]:Point('TOPLEFT', Bui_rdtp, 'TOPRIGHT', SPACING, 0)
-			bbuttons[i]:Point('BOTTOMRIGHT', Bui_rdtp, 'BOTTOMRIGHT', PANEL_HEIGHT + SPACING, 0)
+			bbuttons[i]:Point('TOPLEFT', Bui_rdtp, 'TOPRIGHT', SPACING -schisMod, -schisMod/2)
+			bbuttons[i]:Point('BOTTOMRIGHT', Bui_rdtp, 'BOTTOMRIGHT', PANEL_HEIGHT + SPACING -schisMod, 0)
 			bbuttons[i].parent = RightChatPanel
 			bbuttons[i].text:SetText('C')
 
@@ -315,8 +339,8 @@ function BUIL:ChangeLayout()
 
 		-- Game menu button
 		elseif i == 2 then
-			bbuttons[i]:Point('TOPRIGHT', Bui_rdtp, 'TOPLEFT', -SPACING, 0)
-			bbuttons[i]:Point('BOTTOMLEFT', Bui_rdtp, 'BOTTOMLEFT', -(PANEL_HEIGHT + SPACING), 0)
+			bbuttons[i]:Point('TOPRIGHT', Bui_rdtp, 'TOPLEFT', -SPACING+schisMod, -schisMod/2)
+			bbuttons[i]:Point('BOTTOMLEFT', Bui_rdtp, 'BOTTOMLEFT', -(PANEL_HEIGHT + SPACING)+schisMod, 0)
 			bbuttons[i].text:SetText('G')
 
 			bbuttons[i]:SetScript('OnClick', BuiGameMenu_OnMouseUp)
@@ -339,8 +363,8 @@ function BUIL:ChangeLayout()
 
 		-- VoiceChat/AddOns Button
 		elseif i == 3 then
-			bbuttons[i]:Point('TOPRIGHT', Bui_ldtp, 'TOPLEFT', -SPACING, 0)
-			bbuttons[i]:Point('BOTTOMLEFT', Bui_ldtp, 'BOTTOMLEFT', -(PANEL_HEIGHT + SPACING), 0)
+			bbuttons[i]:Point('TOPRIGHT', Bui_ldtp, 'TOPLEFT', -SPACING + schisMod, -schisMod/2)
+			bbuttons[i]:Point('BOTTOMLEFT', Bui_ldtp, 'BOTTOMLEFT', -(PANEL_HEIGHT + SPACING) + schisMod, 0)
 			bbuttons[i].parent = LeftChatPanel
 			bbuttons[i].text:SetText('V')
 
@@ -377,8 +401,8 @@ function BUIL:ChangeLayout()
 
 		-- LFG Button
 		elseif i == 4 then
-			bbuttons[i]:Point('TOPLEFT', Bui_ldtp, 'TOPRIGHT', SPACING, 0)
-			bbuttons[i]:Point('BOTTOMRIGHT', Bui_ldtp, 'BOTTOMRIGHT', PANEL_HEIGHT + SPACING, 0)
+			bbuttons[i]:Point('TOPLEFT', Bui_ldtp, 'TOPRIGHT', SPACING - schisMod, -schisMod/2)
+			bbuttons[i]:Point('BOTTOMRIGHT', Bui_ldtp, 'BOTTOMRIGHT', PANEL_HEIGHT + SPACING - schisMod, 0)
 			bbuttons[i].text:SetText('L')
 
 			bbuttons[i]:SetScript('OnClick', function(self)
